@@ -53,9 +53,13 @@ class RequestQRCode extends FormRequest
         }
 
         if(parent::hasFile('logo')) {
-            $rules['logo'] = [function() {
-                return parent::file('logo')->getMimeType() == 'image/png';
-            }];
+            $rules['logo'] = [                
+                function($attribute, $val, $fail) {
+                    if(parent::file('logo')->getMimeType() !== 'image/png') {
+                        $fail((new \App\Rules\IsPNG())->message());
+                    }
+                }
+            ];
         } else if (parent::has('logo') && parent::get('logo')) {
             $rules['logo'] = ['URL', new \App\Rules\IsPNG];
         }
