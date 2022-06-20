@@ -1,9 +1,7 @@
 ## QRCODE
 
 
-~~~~html
-baseurl/api/create?content=https%3A%2F%2Flaravel.com%2Fdocs%2F9.x%2Fblade&logo=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F9%2F9a%2FLaravel.svg%2F1200px-Laravel.svg.png&size=300&color=%23000000&bgcolor=%23ffffff
-html
+```baseurl/api/create?content=https%3A%2F%2Flaravel.com%2Fdocs%2F9.x%2Fblade&logo=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F9%2F9a%2FLaravel.svg%2F1200px-Laravel.svg.png&size=300&color=%23000000&bgcolor=%23ffffff```
 
 <table>
     <thead>
