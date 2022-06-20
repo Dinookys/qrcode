@@ -2,6 +2,7 @@
 
 namespace App\Rules;
 
+use GdImage;
 use Illuminate\Contracts\Validation\Rule;
 
 class IsPNG implements Rule
@@ -25,7 +26,13 @@ class IsPNG implements Rule
      */
     public function passes($attribute, $value)
     {
-        return @exif_imagetype($value) === IMAGETYPE_PNG;
+        $img = @imagecreatefrompng($value);
+
+        if($img !== false) {
+            imagedestroy($img);
+            return true;
+        }
+        return false;
     }
 
     /**
