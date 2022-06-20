@@ -18,4 +18,4 @@ use Illuminate\Support\Facades\Route;
     return $request->user();
 }); */
 
-Route::get('/create', [App\Http\Controllers\QRCodeController::class, 'create'])->name('api-qrcode-create');
+Route::match(['post', 'get'], '/create', [App\Http\Controllers\QRCodeController::class, 'create'])->name('api-qrcode-create');

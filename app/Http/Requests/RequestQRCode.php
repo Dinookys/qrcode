@@ -40,21 +40,26 @@ class RequestQRCode extends FormRequest
             'content'   => ['required']
         ];
 
-        if (parent::has('size')) {
+        if (parent::has('size') && parent::get('size')) {
             $rules['size'] = ['numeric'];
         }
 
-        if (parent::has('color')) {
+        if (parent::has('color') && parent::get('color')) {
             $rules['color'] = [new \App\Rules\HexColor];
         }
 
-        if (parent::has('bgcolor')) {
+        if (parent::has('bgcolor') && parent::get('bgcolor')) {
             $rules['bgcolor'] = [new \App\Rules\HexColor];
         }
 
-        if (parent::has('logo') && parent::get('logo')) {
+        if(parent::hasFile('logo')) {
+            $rules['logo'] = [function() {
+                return parent::file('logo')->getMimeType() == 'image/png';
+            }];
+        } else if (parent::has('logo') && parent::get('logo')) {
             $rules['logo'] = ['URL', new \App\Rules\IsPNG];
         }
+
 
         // if (parent::has('name')) {
         //     $rules['name'] = ['required'];

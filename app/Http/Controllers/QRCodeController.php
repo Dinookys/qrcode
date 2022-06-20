@@ -21,20 +21,21 @@ class QRCodeController extends Controller
     {
         return view('qr.index');
     }
-
+    
     public function create (Request $request)
     {
         $bg = $request->get('bgcolor', '#ffffff');
         $color = $request->get('color', '#000000');
         $content = $request->get('content');
-        $logo = $request->get('logo');
         $size = $request->get('size', 300);
         $name = $request->get('name', '');
         
         $qr = (new BaconQrCodeGenerator())->format('png');
 
-        if($logo) {
-            $qr->merge($logo, .2, true);
+        if($request->hasFile('logo')) {
+            $qr->mergeString($request->file('logo')->getContent(), .2, true);            
+        } else if($request->has('logo')) {
+            $qr->merge($request->get('logo'), .2, true);            
         }
 
         list($c_r, $c_g, $c_b) = $this->hexToRGB($color);

@@ -3,62 +3,14 @@
 
     <h1 class="text-2xl font-semibold border-b-2 border-black text-right">QRCode</h1>
 
-    <form id="create-url" action="{{ route('api-qrcode-create') }}" class="border rounded p-4 mt-4" target="_new" >
-        <div class="mt-4 grid  grid-cols-2 gap-4">
-            <div>    
-                <label>
-                    <span class="font-semibold">Nome do QR Code (opcional)</span>
-                </label>
-                <x-input placeholder="Ex: qr-code-prod-321" name="name"></x-input>
-            </div>           
-        </div>
-        <div class="mt-4 grid grid-cols-none gap-4">
-            <div>    
-                <label>
-                    <span class="font-semibold">Conteúdo do QR Code</span>
-                </label>
-                <x-input placeholder="Ex: http://url.com.br, um texto" name="content" required ></x-input>
-            </div>
-        </div>
-        <div class="mt-4 grid grid-cols-none gap-4">
-            <div>    
-                <label>
-                    <span class="font-semibold">Logotipo (opcional)</span>
-                </label>
-                <x-input placeholder="Ex: http://cdn.com.br/logo.png" name="logo"></x-input>
-            </div>
-        </div>
-        <div class="mt-4 grid grid-cols-2 gap-4">
-            <div>    
-                <label>
-                    <span class="font-semibold">Tamanho (pixel)</span>
-                </label>
-                <x-input placeholder="Ex: 300" name="size" type="number" min="100" value="300" ></x-input>
-            </div>
-        </div>
-        <div class="mt-4 grid grid-cols-2 gap-4">
-            <div>    
-                <label>
-                    <span class="font-semibold">Cor</span><br>
-                </label>
-                <x-input type="color" name="color" class="p-0 w-12 h-8" value="#000000" ></x-input>
-            </div>
-            <div>    
-                <label>
-                    <span class="font-semibold">Cor de fundo</span><br>
-                </label>
-                <x-input type="color" name="bgcolor" class="p-0 w-12 h-8" value="#ffffff" ></x-input>
-            </div>
-        </div>        
-        <div class="mt-4">
-            <button type="submit" class="py-1 px-2 border border-black bg-black text-white rounded hover:bg-white hover:text-black ease-in duration-100">Gerar QR Code</button>
-        </div>
-    </form>
+    @include('form-get')    
 
     <h3 class="text-1xl mt-4">Copie a URL abaixo ou click em Gerar QR-Code</h3>
     <div class="p-2 bg-black text-gray-400 rounded overflow-x-auto" >
         {{ route('api-qrcode-create') }}<span class="query text-green-600 word-wrap" ></span>
     </div>
+
+    @include('form-post')    
 
     <h3 class="text-1xl mt-4">Parâmetros da URL</h3>
     <div>
@@ -86,9 +38,16 @@
                 </tr>
                 <tr>
                     <td class="p-1 border border-slate-600" ><code>logo</code></td>
-                    <td class="p-1 border border-slate-600" >string</td>
+                    <td class="p-1 border border-slate-600" >string | file</td>
                     <td class="p-1 border border-slate-600" ><span class="text-gray-300">Não</span></td>
-                    <td class="p-1 border border-slate-600" >Deve ser uma URL de uma imagem no formato PNG</td>
+                    <td class="p-1 border border-slate-600" >
+                        <div class="my-4" >
+                            <span class="text-xs border p-1 text-blue-500 border border-blue-500" >Método GET:</span> Deve ser uma URL de uma imagem no formato PNG
+                        </div>
+                        <div class="my-4" >
+                            <span class="text-xs border p-1 text-green-500 border border-green-500" >Método POST:</span> Deve ser um arquivo de imagem no formato PNG <br>
+                        </div>
+                    </td>
                 </tr>
                 <tr>
                     <td class="p-1 border border-slate-600" ><code>size</code></td>
