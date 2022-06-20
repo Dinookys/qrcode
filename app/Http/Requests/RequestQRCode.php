@@ -52,10 +52,10 @@ class RequestQRCode extends FormRequest
             $rules['bgcolor'] = [new \App\Rules\HexColor];
         }
 
-        if(parent::hasFile('logo')) {
-            $rules['logo'] = [                
-                function($attribute, $val, $fail) {
-                    if(parent::file('logo')->getMimeType() !== 'image/png') {
+        if (parent::hasFile('logo')) {
+            $rules['logo'] = [
+                function ($attribute, $val, $fail) {
+                    if (parent::file('logo')->getMimeType() !== 'image/png') {
                         $fail((new \App\Rules\IsPNG())->message());
                     }
                 }
@@ -63,11 +63,6 @@ class RequestQRCode extends FormRequest
         } else if (parent::has('logo') && parent::get('logo')) {
             $rules['logo'] = ['URL', new \App\Rules\IsPNG];
         }
-
-
-        // if (parent::has('name')) {
-        //     $rules['name'] = ['required'];
-        // }
 
         return $rules;
     }
