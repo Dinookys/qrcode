@@ -32,9 +32,9 @@ class QRCodeController extends Controller
         
         $qr = (new BaconQrCodeGenerator())->format('png');
 
-        if($request->hasFile('logo')) {
+        if($request->hasFile('logo') && ( $request->file('logo') && strlen($request->file('logo')->getContent()) )) {
             $qr->mergeString($request->file('logo')->getContent(), .2, true);            
-        } else if($request->has('logo')) {
+        } else if($request->has('logo') && strlen($request->get('logo', ''))) {
             $qr->merge($request->get('logo'), .2, true);            
         }
 
