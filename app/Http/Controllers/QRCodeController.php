@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 // use Illuminate\Http\Request;
 use App\Http\Requests\RequestQRCode as Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Storage;
+use Mockery\Expectation;
 use SimpleSoftwareIO\QrCode\BaconQrCodeGenerator;
 
 class QRCodeController extends Controller
@@ -96,7 +98,7 @@ class QRCodeController extends Controller
 
         $file = storage_path('app/' . $filename);
 
-        $img = imagecreatefrompng($file);
+        $img = @imagecreatefrompng($file);
 
         list($width, $height) = getimagesize($file);
 
