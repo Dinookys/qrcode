@@ -99,6 +99,11 @@ class QRCodeController extends Controller
 
         list($width, $height) = getimagesize($file);
 
+        $dst_width =  $width;
+        $dst_height = $height;
+        $dst_y = 0;
+        $dst_x = 0;
+
         if ($width > $height) {
             $dst_width =  $dst_height = $width;
             $dst_y = ($dst_width - $height) / 2;
