@@ -26,10 +26,18 @@ class IsPNG implements Rule
      */
     public function passes($attribute, $value)
     {
-        $img = @imagecreatefrompng($value);
+        $ch = curl_init($value);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HEADER, true);
+        curl_setopt($ch, CURLOPT_NOBODY, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, false);
 
-        if($img !== false) {
-            imagedestroy($img);
+        curl_exec($ch);
+        $contentType = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
+        curl_close($ch);
+
+        if ($contentType == 'image/png') {
             return true;
         }
         return false;

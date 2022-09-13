@@ -78,10 +78,15 @@ class RequestQRCode extends FormRequest
 
     protected function failedValidation(Validator $validator): void
     {
-        throw new HttpResponseException(response()->json([
-            'success'       => false,
-            'message'       => 'Opss.. houve um erro',
-            'error'         => $validator->errors()->first()
-        ]));
+        throw new HttpResponseException(response()->json(
+            [
+                'success'       => false,
+                'message'       => 'Opss.. houve um erro',
+                'error'         => $validator->errors()->first()
+            ],
+            200,
+            ['Content-Type' => 'application/json;charset=UTF-8', 'Charset' => 'utf-8'],
+            JSON_UNESCAPED_UNICODE
+        ));
     }
 }

@@ -1,3 +1,33 @@
 @tailwind base;
+
+.tab-nav {
+    @apply border-b border-slate-300 mt-3 pl-4 text-sm;
+}
+
+.tab-nav button {
+    @apply border border-slate-300 py-1 px-3 rounded-t-md bg-slate-300 font-bold hover:bg-slate-200;
+    margin-bottom: -1px;
+}
+
+.tab-nav button.active {
+    @apply border-b-white bg-white;
+}
+
+.tab-content .tab:not(.active) {
+    display: none;
+}
+
+label {
+    user-select: none;
+}
+
+.form-get {
+    @apply border-2 border-green-500 rounded bg-green-100 p-4 mt-4
+}
+
+.form-post {
+    @apply border-2 border-blue-500 rounded bg-blue-100 p-4 mt-4
+}
+
 @tailwind components;
 @tailwind utilities;

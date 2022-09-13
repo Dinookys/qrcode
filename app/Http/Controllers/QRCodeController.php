@@ -39,7 +39,15 @@ class QRCodeController extends Controller
         if ($request->hasFile('logo') && ($request->file('logo') && strlen($request->file('logo')->getContent()))) {
             $this->storageImageLogo($request->file('logo')->getContent(), $logo_name);
         } else if ($request->has('logo') && strlen($request->get('logo', ''))) {
-            $this->storageImageLogo(file_get_contents($request->get('logo')), $logo_name);
+
+            $ch = curl_init($request->get('logo'));
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, false);
+            $result = curl_exec($ch);
+            curl_close($ch);
+
+            $this->storageImageLogo($result, $logo_name);
+            // $this->storageImageLogo(file_get_contents($request->get('logo')), $logo_name);
         }
 
         if (Storage::exists($logo_name)) {

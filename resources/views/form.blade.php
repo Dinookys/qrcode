@@ -1,6 +1,8 @@
 <form id="create-url" action="{{ route('api-qrcode-create') }}"
-    class="border-2 border-blue-500 rounded bg-blue-100 p-4 mt-4" target="_new">
-    <div class="mt-4 font-bold text-blue-500">Método GET</div>
+    x-bind:class="postType ? 'form-post' : 'form-get'" target="_new" 
+    x-bind:method="postType ? 'POST' : 'GET'" 
+    enctype="multipart/form-data"
+    >
     <div class="mt-4 grid  grid-cols-2 gap-4">
         <div>
             <label>
@@ -17,12 +19,20 @@
             <x-input placeholder="Ex: http://url.com.br, um texto" name="content" required></x-input>
         </div>
     </div>
-    <div class="mt-4 grid grid-cols-none gap-4">
+    <div class="mt-4 grid grid-cols-none gap-4">        
         <div>
             <label>
                 <span class="font-semibold">Logotipo (opcional)</span>
-            </label>
-            <x-input placeholder="Ex: http://cdn.com.br/logo.png" name="logo"></x-input>
+            </label>            
+            <label><input type="checkbox" x-model="postType" class="inline-block w-auto" />Subir um arquivo</label>
+            <div class="my-2">
+                <template x-if="!postType" >
+                    <x-input placeholder="Ex: http://cdn.com.br/logo.png" name="logo"></x-input>
+                </template>
+                <template x-if="postType" >
+                    <x-input type="file" name="logo" accept="image/png" ></x-input>
+                </template>
+            </div>
         </div>
     </div>
     <div class="mt-4 grid grid-cols-2 gap-4">
