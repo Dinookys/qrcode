@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 // use Illuminate\Http\Request;
 use App\Http\Requests\RequestQRCode as Request;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Storage;
-use Mockery\Expectation;
 use SimpleSoftwareIO\QrCode\BaconQrCodeGenerator;
 
 class QRCodeController extends Controller
@@ -33,11 +31,12 @@ class QRCodeController extends Controller
         $name = $request->get('name', '');
 
         $qr = (new BaconQrCodeGenerator())->format('png');
+        $qr->margin(0);
         
         $logo_name = 'log-temp' . uniqid() . '.png';
 
         if ($request->hasFile('logo') && ($request->file('logo') && strlen($request->file('logo')->getContent()))) {
-            $this->storageImageLogo($request->file('logo')->getContent(), $logo_name);
+            $file_path = $this->storageImageLogo($request->file('logo')->getContent(), $logo_name);
         } else if ($request->has('logo') && strlen($request->get('logo', ''))) {
 
             $ch = curl_init($request->get('logo'));
@@ -46,13 +45,13 @@ class QRCodeController extends Controller
             $result = curl_exec($ch);
             curl_close($ch);
 
-            $this->storageImageLogo($result, $logo_name);
+            $file_path = $this->storageImageLogo($result, $logo_name);
             // $this->storageImageLogo(file_get_contents($request->get('logo')), $logo_name);
         }
 
         if (Storage::exists($logo_name)) {
             $qr->errorCorrection('H');
-            $qr->mergeString(Storage::get($logo_name));
+            $qr->merge($file_path, .40, true);
         }
 
         list($c_r, $c_g, $c_b) = $this->hexToRGB($color);
@@ -123,13 +122,15 @@ class QRCodeController extends Controller
         }
 
         $ts = imagecreatetruecolor($dst_width, $dst_height);
-        imagefill($ts, 0, 0, imagecolorallocatealpha($ts, 0, 0, 0, 127));
-        imagesavealpha($ts, true);
+        imagefill($ts, 0, 0, imagecolorallocatealpha($ts, 255, 255, 255, 0));
+        imagesavealpha($ts, false);
 
         imagecopymerge($ts, $img, $dst_x, $dst_y, 0, 0, $width, $height, 100);
 
         imagepng($ts, $file);
         imagedestroy($img);
         imagedestroy($ts);
+
+        return $file;
     }
 }
