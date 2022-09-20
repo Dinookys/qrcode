@@ -7,6 +7,9 @@ use Illuminate\Contracts\Validation\Rule;
 
 class IsPNG implements Rule
 {
+
+    protected $responseContentType;
+
     /**
      * Create a new rule instance.
      *
@@ -26,18 +29,19 @@ class IsPNG implements Rule
      */
     public function passes($attribute, $value)
     {
-        $ch = curl_init($value);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HEADER, true);
-        curl_setopt($ch, CURLOPT_NOBODY, true);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, false);
+        // $ch = curl_init($value);
+        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        // curl_setopt($ch, CURLOPT_HEADER, true);
+        // curl_setopt($ch, CURLOPT_NOBODY, true);
+        // curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        // curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 0);
 
-        curl_exec($ch);
-        $contentType = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
-        curl_close($ch);
+        // curl_exec($ch);
+        // $this->responseContentType = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
 
-        if ($contentType == 'image/png') {
+        $path = pathinfo($value);
+                
+        if (strtolower($path['extension']) == 'png') {
             return true;
         }
         return false;
@@ -50,6 +54,6 @@ class IsPNG implements Rule
      */
     public function message()
     {
-        return ':attribute deve ser do tipo PNG';
+        return ':attribute deve ser do tipo PNG (image/png).';
     }
 }
